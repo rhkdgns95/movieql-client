@@ -1,1 +1,5 @@
 1. create-react-app movieql-client
+2. yarn add react-dom apollo-boost react-apollo graphql-tag graphql --save
+3. yarn add react-router-dom
+4. yarn add react-helmet
+5. yarn add react-apollo
