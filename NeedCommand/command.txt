@@ -3,3 +3,6 @@
 3. yarn add react-router-dom
 4. yarn add react-helmet
 5. yarn add react-apollo
+6. yarn add prop-types
+7. yarn add styled-components
+8. yarn add styled-reset

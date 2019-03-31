@@ -1,102 +1,65 @@
 import React from "react";
-import {MOVIE_DETAIL} from "./queries";
+import {DETAILS_QUERY} from "./queries";
 import {Query} from "react-apollo";
+import styled from "styled-components";
+import Movie from "./Movie";
 
-const Detail = ({match: {params: {movieId}}}) => (
-    <Query query={MOVIE_DETAIL} variables={{movieId: parseInt(movieId)}} >
+const Container = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    margin-bottom: 50px;
+`;
+
+const Card = styled.div`
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    background-color: white;
+    border-radius: 7px;
+`;
+
+const Image = Card.withComponent("img");
+
+const Title = styled.h1`
+    font-size:24px;
+    margin-bottom: 10px;
+`;
+
+const Paragraph = styled.span`
+    margin-bottom: 10px;
+    display: block;
+    font-weight: ${props => (props.bold ? "600" : "400")}; 
+`;
+
+const MovieContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 0.7fr);
+    flex-wrap: wrap;
+    justify-items: center;
+    margin-top: 50px;
+`;
+
+const Details = ({match: {params: {getId}}}) => (
+    <Query query={DETAILS_QUERY} variables={{movieId: parseInt(getId)}}>
         {
-            ({loading, data, error}) => {
-                if(loading) return <span>Loading</span>
-                if(error) return <span>error</span>
+            ({loading, error, data}) => {
+                if(loading) return "loading..";
+                if(error) return "error..";
                 const {getMovie: movie} = data;
-                console.log(movie);
                 return (
                     <React.Fragment>
-                        <img src={movie.medium_cover_image}/>
-                        <h2>{movie.title}</h2>
+                        <Container>
+                            <Image src={movie.medium_cover_image}/>
+                            <span>
+                                <Title>{movie.title}</Title>
+                                <Paragraph bold>Rating: {movie.rating}</Paragraph>
+                                <Paragraph>{movie.description_intro}</Paragraph>
+                            </span>
+                        </Container>
                     </React.Fragment>
                 )
             }
         }
-    </Query>   
-);
-export default Detail;
+    </Query>
 
+)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from "react";
-// import { MOVIE_DETAIL } from "./queries";
-// import {Query} from "react-apollo";
-// // import {withRouter} from "react-router-dom";
-
-
-
-// // 이 Detail은 하나의 라우터(APp.js에서 ROuter태그안에서 불러옴) 안에있어서 인자값으로 파라 미터를 가지고올수있다.
-// // 특이한건 Cache가 되어서 한번 Lodaing된건 다시 Loading하지 않는다는점이있다.
-
-// const Detail = ({match: {params: {movieId}}}) => (
-//     <Query query={MOVIE_DETAIL} variables={{movieId: parseInt(movieId)}}>
-//         {
-//             ({loading, error, data}) => {
-//                 if(loading) return <span>Loading...</span>
-//                 if(error) return <span>error</span> 
-//                 const { getMovie: movie} = data;
-//                 return (
-//                     <React.Fragment>
-//                         <div>
-//                         <img src={movie.medium_cover_image}></img>
-//                         <h2>{movie.title}</h2>
-//                         <h4>{movie.genres}</h4>
-//                         <p>{movie.description_intro}</p>
-//                         </div>
-//                     </React.Fragment>
-//                 )
-//             }
-//         }
-//     </Query>
-// );
-
-
-
-
-
-
-
-
-// // const Detail = ({
-// //     match: {
-// //         params: {movieId}
-// //     }
-// // }) => {
-// //     console.log(movieId);
-// //     return (
-// //         <Query query={MOVIE_DETAIL} variables={{movieId: parseInt(movieId)}}>
-// //         {
-// //             // render prop function이다.
-// //             ({loading, data, error}) => { 
-// //                 if(loading) return <span>Loading....</span>;
-// //                 if(error) return <span>error...</span>
-// //                 return (
-// //                     <React.Fragment>
-// //                         {data.getMovie.title}
-// //                         {data.getMovie.description_intro}
-// //                         <img src={data.getMovie.medium_cover_image}></img>
-// //                     </React.Fragment>
-// //                 );
-// //             }
-// //         }
-// //     </Query>);
-// // };
-// export default Detail;
+export default Details;
