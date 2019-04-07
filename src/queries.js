@@ -1,24 +1,28 @@
- import gql from "graphql-tag";
+import gql from "graphql-tag";
 
-export const HOME_QUERY = gql`
+export const IS_LOGGED_IN = gql`
     {
-        getMovies(limit:20, rating:9){
+        auth {
+            isLoggedIn @client
+        }    
+    }
+`;
+
+export const DETAILS_QUERY = gql`
+    query movieDetails($id: Int!) {
+        Movie(id: $id){ 
             title
-            genres
-            rating
-            id
+            description_intro
             medium_cover_image
         }
     }
 `;
 
-export const DETAILS_QUERY = gql`
-    query getMovieDetails($movieId: Int!) {
-        getMovie(id: $movieId) {
+export const MOVIE_QUERY = gql`
+    {
+        Movies(limit:9, rating: 9) {
             id
             title
-            medium_cover_image
-            description_intro           
             rating
         }
     }
